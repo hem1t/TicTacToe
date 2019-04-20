@@ -60,6 +60,8 @@ class main():
 		# TODO Make a logic to check the game status
 		# This will return 0 if no one wins and 1 if player1 wins and 2 if player two wins
 		# 4 if its a draw.
+		countX_O = 0
+		draw_count = 0
 		countX = 0
 		countO = 0
 		# if count goes to 3 its win
@@ -73,16 +75,23 @@ class main():
 			for i in win:
 				if self.board[i] == "x":
 					countX += 1
+					countX_O += 1
 				elif self.board[i] == "o":
 					countO += 1
-			# checking for win number 3; if not reset them; for next WIN
+					countX_O += 1 
+			if countX_O == 3:
+				draw_count += 1
+			# checking for win number 3; if not reset them; for next WIN check
 			if countX == 3:
 				return 1
 			if countO == 3:
 				return 2
-			# Reseting the count number
+			#reseting counts
+			countX_O = 0
 			countO = 0
 			countX = 0
+		if draw_count == 8:
+			return 4
 
 
 	def draw(self):
@@ -103,8 +112,6 @@ class main():
 		# In short, will run the game.
 		win_status = 0
 		place = 0
-		turns1 = 1
-		turns2 = 1
 		while True:
 			# First step; putting the board on the screen
 			self.draw()
@@ -127,14 +134,10 @@ class main():
 						continue
 
 					self.draw()
-					turns1 += 1
-					if turns1 >= 2:
-						win_status = self.check()
-						if win_status == 1:
-							break
+					win_status = self.check()
 					break
 
-			# End of main Loop; decision is made; now announce
+			# End of player Loop; decision is made; now announce
 			self.draw()
 			if win_status == 1:
 				print(self.player1+" You win! ")
@@ -146,6 +149,12 @@ class main():
 					break
 			elif win_status == 2:
 				print(self.player2+" You win! ")
+				ack = input("Wanna play again(y/n):").lower()
+				if ack == "y":
+					self.Reset()
+					continue
+			elif win_status == 4:
+				print("It's a draw...")
 				ack = input("Wanna play again(y/n):").lower()
 				if ack == "y":
 					self.Reset()
@@ -171,11 +180,7 @@ class main():
 						continue
 
 					self.draw()
-					turns2 += 1
-					if turns2 >= 2:
-						win_status = self.check()
-						if win_status == 1:
-							break
+					win_status = self.check()
 					break
 			# End of main Loop; decision is made; now announce
 			self.draw()
@@ -189,6 +194,12 @@ class main():
 					break
 			elif win_status == 2:
 				print(self.player2+" You win! ")
+				ack = input("Wanna play again(y/n):").lower()
+				if ack == "y":
+					self.Reset()
+					continue
+			elif win_status == 4:
+				print("It's a draw...")
 				ack = input("Wanna play again(y/n):").lower()
 				if ack == "y":
 					self.Reset()
